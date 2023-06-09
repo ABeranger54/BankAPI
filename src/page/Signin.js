@@ -1,8 +1,33 @@
 import Footer from "../component/Footer";
 import Header from "../component/Header";
+import { useEffect, useState } from "react";
 
 function Signin() {
-  return (
+    const [data, setData] = useState();
+
+    const options = {
+        method: 'POST',
+        body: {
+            email: "tony@stark.com",
+            password: "password123"
+        }
+    };
+
+    useEffect(() => {
+        fetch("http://localhost:3001/api/v1/user/login", options)
+        .then(response => {
+            console.log(response);
+            return response.json();
+        }).then(res =>{
+            setData(res);
+        })
+    },[])
+
+    if(data){
+        console.log(data);
+    }
+
+    return (
     <div>
         <Header />
         <main class="main bg-dark">
@@ -29,7 +54,7 @@ function Signin() {
         </main>
         <Footer />
     </div>
-  );
+    );
 }
 
 export default Signin;

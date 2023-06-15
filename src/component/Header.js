@@ -1,17 +1,44 @@
 import logo from "../media/argentBankLogo.png"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { getToken, removeToken } from "../SessionUtils";
 
 function Header() {
+
+  const [tokenChanged, setTokenChanged] = useState(false);
+
+  if(tokenChanged){
+    removeToken();
+    setTokenChanged(false);
+    return <Navigate to="/" />
+  }
+
+  const isLogged = getToken();
+
   return (
-    <nav class="main-nav">
-        <Link to="/" class="main-nav-logo">
-            <img class="main-nav-logo-image" src={logo} alt="Argent Bank Logo" />
-            <h1 class="sr-only">Argent Bank</h1>
+    <nav className="main-nav">
+        <Link to="/" className="main-nav-logo">
+            <img className="main-nav-logo-image" src={logo} alt="Argent Bank Logo" />
+            <h1 className="sr-only">Argent Bank</h1>
         </Link>
         <div>
-            <Link to="/signin" class="main-nav-item">
-                <i class="fa fa-user-circle"></i>Sign In
+          {isLogged &&
+            <div>
+              <Link to="/profile" className="main-nav-item">
+                <i className="fa fa-user-circle"></i>
+                Tony
+              </Link>
+              <span href="#" onClick={() => setTokenChanged(true)} className="main-nav-item">
+                <i className="fa fa-sign-out"></i>
+                Sign Out
+              </span>
+            </div>
+          }
+          {!isLogged && 
+            <Link to="/signin" className="main-nav-item">
+                <i className="fa fa-user-circle"></i>Sign In
             </Link>
+          }
         </div>
     </nav>
   );

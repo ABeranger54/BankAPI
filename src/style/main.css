@@ -54,6 +54,8 @@ body {
 .main-nav-item {
   text-decoration: none;
   margin-right: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .main-nav-item:hover {
@@ -193,6 +195,11 @@ body {
   margin-bottom: 1rem;
 }
 
+.error{
+  color: red;
+  display: none;
+}
+
 .input-wrapper label {
   font-weight: bold;
 }
@@ -288,4 +295,9 @@ body {
   .transaction-button {
     width: 200px;
   }
+}
+
+#profile{
+  padding-top: 50px;
+  padding-bottom: 50px;
 }

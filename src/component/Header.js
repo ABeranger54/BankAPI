@@ -9,7 +9,6 @@ function Header() {
 
   if(tokenChanged){
     removeToken();
-    setTokenChanged(false);
     return <Navigate to="/" />
   }
 

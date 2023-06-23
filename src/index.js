@@ -6,18 +6,22 @@ import Signin from './page/Signin';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from './page/Profile';
+import { Provider } from 'react-redux'
+import store from './store/index'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </Router>
-  </React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+    </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

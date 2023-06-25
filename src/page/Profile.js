@@ -1,27 +1,28 @@
+import { useDispatch, useSelector } from "react-redux";
 import { getToken, request } from "../SessionUtils";
 import Account from "../component/Account";
 import Footer from "../component/Footer";
 import Header from "../component/Header";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 function Profile() {
 
-    const [data, setData] = useState();
-    
+    const dispatch = useDispatch();
+
     useEffect(() =>{
         request("POST", "profile", [{name: "Authorization", value: 'Bearer ' + getToken()}]).then(res =>{
-            const r = res;
-            console.log(res);
-            setData(r);
+            dispatch({type: "fetchData", payload: {data: res}});
         })
     },[])
+
+    const data = useSelector((state) => state.fetchData);
 
     if(!getToken()){
         return <Navigate to='/signin' />
     }
 
-    if(data){
+    if(data && data.body){
         return (
         <div>
             <Header />

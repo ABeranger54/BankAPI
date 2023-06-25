@@ -42,5 +42,10 @@ export function request(type, uri, headers, body = {}){
     .then(response => {
         return response.json();
     })
+}
 
+export function redirectTo(uri){
+    const link = document.createElement("Link");
+    link.setAttribute("to", uri);
+    link.click();
 }

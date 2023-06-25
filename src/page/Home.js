@@ -4,18 +4,12 @@ import Header from "../component/Header";
 import iconChat from "../media/icon-chat.png"
 import iconMoney from "../media/icon-money.png"
 import iconSecurity from "../media/icon-security.png"
-import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
-
-  const dispatch = useDispatch();
-  const counter = useSelector((state) => state.finalValue);
-  console.log(counter);
-
   return (
     <div>
       <Header />
-      <main onClick={() => dispatch({type: "increment"})}>
+      <main>
         <div className="hero">
           <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>

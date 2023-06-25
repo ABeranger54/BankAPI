@@ -1,12 +1,12 @@
+import { useDispatch, useSelector } from "react-redux";
 import { getToken, request, setToken } from "../SessionUtils";
 import Footer from "../component/Footer";
 import Header from "../component/Header";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import  { Navigate } from 'react-router-dom'
 
 function Signin() {
-    const [data, setData] = useState();
-    const [clicked, setClicked] = useState(0);
+    const dispatch = useDispatch();
 
     var credentials = {};
     const usernameField = document.getElementById("username");
@@ -16,17 +16,24 @@ function Signin() {
         credentials.password = passwordField.value;
     }
 
+    const clicked = useSelector((state) => state.counter);
+
     useEffect(() =>{
-        request("POST", "login", [], credentials).then(res =>{
-            setData(res);
-        })
+        if(clicked){
+            request("POST", "login", [], credentials).then(res =>{
+                dispatch({type: "fetchData", payload: {data: res}});
+            })
+        }
+        
     },[clicked])
+
+    const data = useSelector((state) => state.fetchData);
 
     if(getToken()){
         return <Navigate to='/profile' />
     }
 
-    if(clicked && data){
+    if(data){
         if(data.status === 200){
             setToken(data.body.token);
             return <Navigate to='/profile' />
@@ -57,7 +64,7 @@ function Signin() {
                     </div>
                     <p className="error">Error: wrong username or password</p>
                 </form>
-                <button className="sign-in-button" onClick={() => setClicked(clicked + 1)}>Sign In</button>
+                <button className="sign-in-button" onClick={() => dispatch({type: "counter"})}>Sign In</button>
             </section>
         </main>
         <Footer />

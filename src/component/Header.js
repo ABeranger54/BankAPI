@@ -1,15 +1,20 @@
 import logo from "../media/argentBankLogo.png"
-import { Link, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { getToken, removeToken } from "../SessionUtils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Header() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const logOut = useSelector((state) => state.signOut);
 
-  const [tokenChanged, setTokenChanged] = useState(false);
-
-  if(tokenChanged){
+  if(logOut){
     removeToken();
-    return <Navigate to="/" />
+    navigate(0);
+    return navigate("/");
   }
 
   const isLogged = getToken();
@@ -27,7 +32,7 @@ function Header() {
                 <i className="fa fa-user-circle"></i>
                 Tony
               </Link>
-              <span href="#" onClick={() => setTokenChanged(true)} className="main-nav-item">
+              <span href="#" onClick={() => dispatch({type: "signOut"})} className="main-nav-item">
                 <i className="fa fa-sign-out"></i>
                 Sign Out
               </span>

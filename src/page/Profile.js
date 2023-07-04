@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, request } from "../SessionUtils";
+import { request } from "../SessionUtils";
 import Account from "../component/Account";
 import Footer from "../component/Footer";
 import Header from "../component/Header";
@@ -11,11 +11,10 @@ function Profile() {
 
     const dispatch = useDispatch();
     const manager = new CookieManager();
-    console.log(manager.config);
 
     useEffect(() =>{
         request("POST", "profile", [{name: "Authorization", value: 'Bearer ' + manager.getToken()}]).then(res =>{
-            dispatch({type: "fetchData", payload: {data: res}});
+            dispatch({type: "fetchData", payload: {data: res.body}});
         })
     },[])
 
@@ -25,7 +24,7 @@ function Profile() {
         return <Navigate to='/signin' />
     }
 
-    if(data && data.body){
+    if(data){
         return (
         <div>
             <Header />
@@ -33,13 +32,13 @@ function Profile() {
                 <div className="header">
                     <h1>Welcome back<br /></h1>
                     <div id="showName">
-                        <h2>{data.body.firstName} {data.body.lastName}!</h2>
+                        <h2>{data.firstName} {data.lastName}!</h2>
                         <button className="edit-button" onClick={() => editName()}>Edit Name</button>
                     </div>
                     <div id="editName">
                         <div className="inputs">
-                            <input type="text" id="fName" name="fName" placeholder={data.body.firstName} />
-                            <input type="text" id="lName" name="lName" placeholder={data.body.lastName} />
+                            <input type="text" id="fName" name="fName" placeholder={data.firstName} />
+                            <input type="text" id="lName" name="lName" placeholder={data.lastName} />
                         </div>
                         <div>
                             <button className="save-button" onClick={() => save()}>Save</button>
@@ -66,9 +65,10 @@ function Profile() {
     function save(){
         const fName = document.getElementById("fName").value;
         const lName = document.getElementById("lName").value;
+        if(!fName || !lName) return;
         const bodyParams = {firstName: fName, lastName: lName};
         request("PUT", "profile", [{name: "Authorization", value: 'Bearer ' + manager.getToken()}], bodyParams);
-        document.querySelector("#showName h2").innerHTML = fName + " " + lName + "!";
+        dispatch({type: "fetchData", payload: {data: {...data, firstName: fName, lastName: lName}}});
         closeEdit();
     }
 

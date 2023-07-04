@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import CookieManager from "../SessionUtils"
+import { useSelector } from "react-redux";
 
 function Header() {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ function Header() {
 
   const manager = new CookieManager();
   const isLogged = manager.getToken();
+
+  const userData = useSelector((state) => state.fetchData);
 
   function logout(){
     dispatch({type: "signOut"});
@@ -28,7 +31,7 @@ function Header() {
             <div>
               <Link to="/profile" className="main-nav-item">
                 <i className="fa fa-user-circle"></i>
-                Tony
+                {userData.firstName}
               </Link>
               <span href="#" onClick={() => logout()} className="main-nav-item">
                 <i className="fa fa-sign-out"></i>

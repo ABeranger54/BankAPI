@@ -1,23 +1,21 @@
 import logo from "../media/argentBankLogo.png"
 import { Link } from "react-router-dom";
-import { getToken, removeToken } from "../SessionUtils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import CookieManager from "../SessionUtils"
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  const logOut = useSelector((state) => state.signOut);
 
-  if(logOut){
-    removeToken();
-    navigate(0);
+  const manager = new CookieManager();
+  const isLogged = manager.getToken();
+
+  function logout(){
+    dispatch({type: "signOut"});
+    manager.removeToken();
     return navigate("/");
   }
-
-  const isLogged = getToken();
 
   return (
     <nav className="main-nav">
@@ -32,7 +30,7 @@ function Header() {
                 <i className="fa fa-user-circle"></i>
                 Tony
               </Link>
-              <span href="#" onClick={() => dispatch({type: "signOut"})} className="main-nav-item">
+              <span href="#" onClick={() => logout()} className="main-nav-item">
                 <i className="fa fa-sign-out"></i>
                 Sign Out
               </span>

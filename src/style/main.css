@@ -301,3 +301,39 @@ body {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
+#showName h2, h1{
+  margin: 0;
+  font-size: 34px;
+}
+
+#showName h2{
+  margin-bottom: 15px;
+}
+
+#editName{
+  display: none;
+}
+
+#editName .inputs{
+  margin-bottom: 5px;
+}
+
+#editName div{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#editName input{
+  width: 170px;
+  height: 25px;
+  padding: 5px;
+  font-size: 15px;
+}
+
+#editName button{
+  width: 110px;
+  height: 30px;
+  padding: 5px;
+}

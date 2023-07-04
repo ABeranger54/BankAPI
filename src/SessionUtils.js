@@ -1,24 +1,26 @@
 import Cookies from 'universal-cookie';
 
-function getCookieManager(){
-    return new Cookies();
-}
+class CookieManager {
 
-function getCookieParams(){
-    return {secure: true, sameSite: true};
-}
+    constructor() {
+        this.cookieInstance = new Cookies();
+        this.config = {secure: true, sameSite: true};
+    }
+    
+    getToken(){
+        return this.cookieInstance.get("token", this.config);
+    }
+    
+    setToken(value){
+        return this.cookieInstance.set("token", value, this.config);
+    }
+    
+    removeToken(){
+        return this.cookieInstance.remove("token", this.config);
+    }
+};
 
-export function getToken(){
-    return getCookieManager().get("token", getCookieParams());
-}
-
-export function setToken(value){
-    return getCookieManager().set("token", value, getCookieParams());
-}
-
-export function removeToken(){
-    return getCookieManager().remove("token", getCookieParams());
-}
+export default CookieManager;
 
 export function request(type, uri, headers, body = {}){
     const options = {

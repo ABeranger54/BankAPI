@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, request, setToken } from "../SessionUtils";
+import { request } from "../SessionUtils";
 import Footer from "../component/Footer";
 import Header from "../component/Header";
 import { useEffect } from "react";
 import  { Navigate } from 'react-router-dom'
+import CookieManager from "../SessionUtils"
 
 function Signin() {
     const dispatch = useDispatch();
@@ -28,14 +29,15 @@ function Signin() {
     },[clicked])
 
     const data = useSelector((state) => state.fetchData);
+    const manager = new CookieManager();
 
-    if(getToken()){
+    if(manager.getToken()){
         return <Navigate to='/profile' />
     }
 
     if(data){
         if(data.status === 200){
-            setToken(data.body.token);
+            manager.setToken(data.body.token);
             return <Navigate to='/profile' />
         }else{
             document.querySelector(".error").style.display = "inline-block";
